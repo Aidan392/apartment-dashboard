@@ -12,15 +12,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
-        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f8fafc; }
-        .stat-card { background: white; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f0fdf4; } /* 배경을 연한 초록빛으로 변경 */
+        .stat-card { background: white; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05); }
         .chart-container { position: relative; height: 400px; width: 100%; }
-        .table-container { overflow-x: auto; background: white; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+        .table-container { overflow-x: auto; background: white; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05); }
         table { width: 100%; border-collapse: collapse; }
-        th { background-color: #f1f5f9; color: #475569; font-weight: 600; text-align: left; padding: 1rem; border-bottom: 2px solid #e2e8f0; }
-        td { padding: 1rem; border-bottom: 1px solid #e2e8f0; color: #1e293b; }
-        tr:hover { background-color: #f8fafc; }
-        .loading-spinner { border: 4px solid #f3f3f3; border-top: 4px solid #3b82f6; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        th { background-color: #f0fdf4; color: #065f46; font-weight: 600; text-align: left; padding: 1rem; border-bottom: 2px solid #d1fae5; }
+        td { padding: 1rem; border-bottom: 1px solid #f0fdf4; color: #1e293b; }
+        tr:hover { background-color: #f9fefc; }
+        .loading-spinner { border: 4px solid #ecfdf5; border-top: 4px solid #10b981; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
@@ -30,35 +30,35 @@
         <!-- Header -->
         <header class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-                <h1 class="text-3xl font-bold text-slate-800">우리 동네 아파트 실거래가 대시보드</h1>
-                <p class="text-slate-500 mt-2">구글 시트 실시간 데이터를 기반으로 한 부동산 시장 현황</p>
+                <h1 class="text-3xl font-bold text-emerald-900">우리 동네 아파트 실거래가 대시보드</h1>
+                <p class="text-emerald-700 mt-2">구글 시트 실시간 데이터를 기반으로 한 부동산 시장 현황</p>
             </div>
-            <div id="lastUpdate" class="text-sm text-slate-400">데이터 로딩 중...</div>
+            <div id="lastUpdate" class="text-sm text-emerald-600/60">데이터 로딩 중...</div>
         </header>
 
         <!-- Loading Overlay -->
-        <div id="loader" class="fixed inset-0 bg-white bg-opacity-80 z-50 flex flex-col items-center justify-center">
+        <div id="loader" class="fixed inset-0 bg-white/90 z-50 flex flex-col items-center justify-center">
             <div class="loading-spinner mb-4"></div>
-            <p class="text-slate-600 font-medium">데이터를 분석하고 있습니다...</p>
+            <p class="text-emerald-700 font-medium">데이터를 분석하고 있습니다...</p>
         </div>
 
         <!-- Summary Statistics -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div class="stat-card">
-                <p class="text-sm text-slate-500 font-medium mb-1">전체 거래 건수</p>
-                <h3 id="totalCount" class="text-2xl font-bold text-blue-600">- 건</h3>
+            <div class="stat-card border-l-4 border-emerald-500">
+                <p class="text-sm text-emerald-600 font-medium mb-1">전체 거래 건수</p>
+                <h3 id="totalCount" class="text-2xl font-bold text-emerald-700">- 건</h3>
             </div>
-            <div class="stat-card">
-                <p class="text-sm text-slate-500 font-medium mb-1">평균 거래가</p>
-                <h3 id="avgPrice" class="text-2xl font-bold text-slate-800">- 만원</h3>
+            <div class="stat-card border-l-4 border-teal-500">
+                <p class="text-sm text-teal-600 font-medium mb-1">평균 거래가</p>
+                <h3 id="avgPrice" class="text-2xl font-bold text-teal-700">- 만원</h3>
             </div>
-            <div class="stat-card">
-                <p class="text-sm text-slate-500 font-medium mb-1">최고 거래가</p>
-                <h3 id="maxPrice" class="text-2xl font-bold text-rose-600">- 만원</h3>
+            <div class="stat-card border-l-4 border-green-600">
+                <p class="text-sm text-green-600 font-medium mb-1">최고 거래가</p>
+                <h3 id="maxPrice" class="text-2xl font-bold text-green-800">- 만원</h3>
             </div>
-            <div class="stat-card">
-                <p class="text-sm text-slate-500 font-medium mb-1">최저 거래가</p>
-                <h3 id="minPrice" class="text-2xl font-bold text-emerald-600">- 만원</h3>
+            <div class="stat-card border-l-4 border-lime-500">
+                <p class="text-sm text-lime-600 font-medium mb-1">최저 거래가</p>
+                <h3 id="minPrice" class="text-2xl font-bold text-lime-700">- 만원</h3>
             </div>
         </div>
 
@@ -66,15 +66,15 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
             <!-- Chart Section -->
             <div class="lg:col-span-2 stat-card">
-                <h3 class="text-lg font-bold text-slate-800 mb-6">월별 평균 거래가격 추이</h3>
+                <h3 class="text-lg font-bold text-emerald-900 mb-6">월별 평균 거래가격 추이</h3>
                 <div class="chart-container">
                     <canvas id="priceChart"></canvas>
                 </div>
             </div>
 
-            <!-- Distribution Info or Quick Info -->
+            <!-- Distribution Info -->
             <div class="stat-card">
-                <h3 class="text-lg font-bold text-slate-800 mb-6">단지별 거래 비중</h3>
+                <h3 class="text-lg font-bold text-emerald-900 mb-6">단지별 거래 비중</h3>
                 <div class="chart-container" style="height: 300px;">
                     <canvas id="aptDistributionChart"></canvas>
                 </div>
@@ -84,8 +84,8 @@
         <!-- Table Section -->
         <div class="stat-card mb-8">
             <div class="flex items-center justify-between mb-6">
-                <h3 class="text-lg font-bold text-slate-800">최근 실거래 목록</h3>
-                <span class="text-xs bg-slate-100 text-slate-600 px-3 py-1 rounded-full uppercase font-semibold">Live Data</span>
+                <h3 class="text-lg font-bold text-emerald-900">최근 실거래 목록</h3>
+                <span class="text-xs bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full uppercase font-bold">Live Data</span>
             </div>
             <div class="table-container">
                 <table id="dataList">
@@ -138,7 +138,6 @@
         function processData(data) {
             if (!data || data.length === 0) return;
 
-            // 1. Summary Stats
             const prices = data.map(item => cleanNumber(item['거래금액(만원)']));
             const totalCount = data.length;
             const avgPrice = Math.round(prices.reduce((a, b) => a + b, 0) / totalCount);
@@ -151,12 +150,9 @@
             document.getElementById('minPrice').innerText = `${minPrice.toLocaleString()} 만원`;
             document.getElementById('lastUpdate').innerText = `최종 업데이트: ${new Date().toLocaleString()}`;
 
-            // 2. Chart: Monthly Average Price
-            // Group by Month (Assuming 거래일자 format like YYYYMMDD or YYYY-MM-DD)
             const monthlyData = {};
             data.forEach(item => {
                 let dateStr = item['거래일자'].toString();
-                // Normalize YYYYMMDD to YYYY-MM
                 let month = dateStr.length >= 6 ? `${dateStr.substring(0,4)}-${dateStr.substring(4,6)}` : dateStr;
                 if (!monthlyData[month]) {
                     monthlyData[month] = { total: 0, count: 0 };
@@ -170,7 +166,6 @@
 
             renderPriceChart(labels, avgPrices);
 
-            // 3. Chart: Apartment Distribution
             const aptCounts = {};
             data.forEach(item => {
                 const apt = item['아파트명'];
@@ -182,20 +177,18 @@
             
             renderAptChart(topApts.map(a => a[0]), topApts.map(a => a[1]));
 
-            // 4. Populate Table
             const tableBody = document.getElementById('tableBody');
             tableBody.innerHTML = '';
             
-            // Show latest 50 entries
             data.slice().reverse().forEach(item => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td class="font-medium">${item['거래일자']}</td>
-                    <td class="font-bold text-blue-700">${item['아파트명']}</td>
+                    <td class="font-bold text-emerald-700">${item['아파트명']}</td>
                     <td>${item['법정동']}</td>
                     <td>${item['전용면적(㎡)']}</td>
                     <td>${item['층']}층</td>
-                    <td class="text-right font-semibold">${parseInt(item['거래금액(만원)']).toLocaleString()}</td>
+                    <td class="text-right font-semibold text-emerald-900">${parseInt(item['거래금액(만원)']).toLocaleString()}</td>
                     <td class="text-slate-500">${item['건축년도']}년</td>
                 `;
                 tableBody.appendChild(tr);
@@ -211,13 +204,15 @@
                     datasets: [{
                         label: '평균 거래금액 (만원)',
                         data: data,
-                        borderColor: '#3b82f6',
-                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
                         fill: true,
                         tension: 0.4,
                         borderWidth: 3,
-                        pointBackgroundColor: '#3b82f6',
-                        pointRadius: 4
+                        pointBackgroundColor: '#059669',
+                        pointBorderColor: '#fff',
+                        pointRadius: 5,
+                        pointHoverRadius: 7
                     }]
                 },
                 options: {
@@ -229,10 +224,13 @@
                     scales: {
                         y: {
                             beginAtZero: false,
-                            grid: { color: '#f1f5f9' },
-                            ticks: { callback: value => value.toLocaleString() + '만' }
+                            grid: { color: '#f0fdf4' },
+                            ticks: { callback: value => value.toLocaleString() + '만', color: '#065f46' }
                         },
-                        x: { grid: { display: false } }
+                        x: { 
+                            grid: { display: false },
+                            ticks: { color: '#065f46' }
+                        }
                     }
                 }
             });
@@ -247,18 +245,23 @@
                     datasets: [{
                         data: data,
                         backgroundColor: [
-                            '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'
+                            '#059669', '#10b981', '#34d399', '#6ee7b7', '#a7f3d0'
                         ],
-                        borderWidth: 0
+                        hoverOffset: 10,
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: { position: 'bottom', labels: { boxWidth: 12, padding: 20 } }
+                        legend: { 
+                            position: 'bottom', 
+                            labels: { boxWidth: 10, padding: 15, color: '#065f46', font: { size: 11 } } 
+                        }
                     },
-                    cutout: '70%'
+                    cutout: '65%'
                 }
             });
         }
